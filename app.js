@@ -63,7 +63,16 @@ var events = [
     '2019migib',
     '2019miket',
     '2019misou',
-    '2019nhgrs'
+    '2019nhgrs',
+    '2019cadm',
+    '2019gagai',
+    '2019onosh',
+    '2019pahat',
+    '2019vagle',
+    '2019vahay',
+    '2019txaus',
+    '2019txelp',
+    '2019wamou'  
 ];
 
 for (var event in events) {

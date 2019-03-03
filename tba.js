@@ -316,7 +316,6 @@ module.exports = {
                                 'climb_level_3_sum': 0,
                                 'climb_level_2_sum': 0,
                                 'climb_level_1_sum': 0,
-                                'auto_move_sum': 0,
                                 'teams_played_with': []
                             };
                         }
@@ -333,12 +332,11 @@ module.exports = {
                         results[team].rocket_mid_cargo_sum += parsed_match[team].rocket_mid_cargo;
                         results[team].rocket_low_panel_sum += parsed_match[team].rocket_low_panels;
                         results[team].rocket_low_cargo_sum += parsed_match[team].rocket_low_cargo;
-                        results[team].start_level_2_sum += parsed_match[team].level_start == 2;
-                        results[team].start_level_1_sum += parsed_match[team].level_start == 1;;
-                        results[team].climb_level_3_sum += parsed_match[team].level_climb == 3;;
-                        results[team].climb_level_2_sum += parsed_match[team].level_climb == 2;;
-                        results[team].climb_level_1_sum += parsed_match[team].level_climb == 1;;
-                        results[team].auto_move_sum += parsed_match[team].auto_move == 1;
+                        results[team].start_level_2_sum += (parsed_match[team].level_start == 2) && (parsed_match[team].auto_move == 1);
+                        results[team].start_level_1_sum += (parsed_match[team].level_start == 1) && (parsed_match[team].auto_move == 1);
+                        results[team].climb_level_3_sum += parsed_match[team].level_climb == 3;
+                        results[team].climb_level_2_sum += parsed_match[team].level_climb == 2;
+                        results[team].climb_level_1_sum += parsed_match[team].level_climb == 1;
                         results[team].teams_played_with = results[team].teams_played_with.concat(parsed_match[team].teams_played_with);
 
                     }
@@ -368,22 +366,22 @@ module.exports = {
                     row.push(that.countInArray(results[comparing_team].teams_played_with, parseInt(team)));
                 }
                 A.push(row);
-                cargo_side_panel_sums.push(results[team].cargo_side_panel_sum);
-                cargo_side_cargo_sums.push(results[team].cargo_side_cargo_sum);
-                cargo_front_panel_sums.push(results[team].cargo_front_panel_sum);
-                cargo_front_cargo_sums.push(results[team].cargo_front_cargo_sum);
-                rocket_high_panel_sums.push(results[team].rocket_high_panel_sum);
-                rocket_high_cargo_sums.push(results[team].rocket_high_cargo_sum);
-                rocket_mid_panel_sums.push(results[team].rocket_mid_panel_sum);
-                rocket_mid_cargo_sums.push(results[team].rocket_mid_cargo_sum);
-                rocket_low_panel_sums.push(results[team].rocket_low_panel_sum);
-                rocket_low_cargo_sums.push(results[team].rocket_low_cargo_sum);
+                cargo_side_panel_sums.push(results[team].cargo_side_panel_sum * 2);
+                cargo_side_cargo_sums.push(results[team].cargo_side_cargo_sum * 3);
+                cargo_front_panel_sums.push(results[team].cargo_front_panel_sum * 2);
+                cargo_front_cargo_sums.push(results[team].cargo_front_cargo_sum * 3);
+                rocket_high_panel_sums.push(results[team].rocket_high_panel_sum * 2);
+                rocket_high_cargo_sums.push(results[team].rocket_high_cargo_sum * 3);
+                rocket_mid_panel_sums.push(results[team].rocket_mid_panel_sum * 2);
+                rocket_mid_cargo_sums.push(results[team].rocket_mid_cargo_sum * 3);
+                rocket_low_panel_sums.push(results[team].rocket_low_panel_sum * 2);
+                rocket_low_cargo_sums.push(results[team].rocket_low_cargo_sum * 3);
                 climb_avgs.push(
                     (results[team].climb_level_3_sum * 12 + 
                     results[team].climb_level_2_sum * 6 + 
                     results[team].climb_level_1_sum * 3) /
                     results[team].matches);
-                start_avgs.push((results[team].start_level_2_sum * 3)/results[team].matches);
+                start_avgs.push((results[team].start_level_2_sum * 6 + results[team].start_level_1_sum * 3)/results[team].matches);
             }
             var cargo_side_panel_opr = math.lusolve(A, cargo_side_panel_sums);
             var cargo_side_cargo_opr = math.lusolve(A, cargo_side_cargo_sums);
@@ -414,16 +412,16 @@ module.exports = {
                     'climb_avg': climb_avgs[i]
                 };
                 oprs[team].opr = 
-                    oprs[team].cargo_side_panel_opr * 2 +
-                    oprs[team].cargo_side_cargo_opr * 3 +
-                    oprs[team].cargo_front_panel_opr * 2 +
-                    oprs[team].cargo_front_cargo_opr * 3 +
-                    oprs[team].rocket_high_panel_opr * 2 +
-                    oprs[team].rocket_high_cargo_opr * 3 +
-                    oprs[team].rocket_mid_panel_opr * 2 +
-                    oprs[team].rocket_mid_cargo_opr * 3 +
-                    oprs[team].rocket_low_panel_opr * 2 +
-                    oprs[team].rocket_low_cargo_opr * 3 +
+                    oprs[team].cargo_side_panel_opr +
+                    oprs[team].cargo_side_cargo_opr +
+                    oprs[team].cargo_front_panel_opr +
+                    oprs[team].cargo_front_cargo_opr +
+                    oprs[team].rocket_high_panel_opr +
+                    oprs[team].rocket_high_cargo_opr +
+                    oprs[team].rocket_mid_panel_opr +
+                    oprs[team].rocket_mid_cargo_opr +
+                    oprs[team].rocket_low_panel_opr +
+                    oprs[team].rocket_low_cargo_opr +
                     oprs[team].start_avg +
                     oprs[team].climb_avg
                 i++;
