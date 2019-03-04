@@ -1,4 +1,5 @@
-var tba = require("./tba.js");
+var TBA = require('./src/tba.js');
+var tba = new TBA();
 
 // Year + 4 digit event code
 var eventCode = "2019miket";
@@ -72,7 +73,9 @@ var events = [
     '2019vahay',
     '2019txaus',
     '2019txelp',
-    '2019wamou'  
+    '2019wamou',
+    '2019tuis',
+    '2019isde1'
 ];
 
 for (var event in events) {
